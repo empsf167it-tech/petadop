@@ -1,0 +1,2602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PAWORA — Every Paw Deserves a Forever." />
+  <title>PAWORA — Every Paw Deserves a Forever</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --ivory: #f7f1e7;
+      --forest: #123c32;
+      --forest-dark: #092a23;
+      --coral: #ef8b78;
+      --white: #fffdf9;
+      --muted: #718078;
+      --border: rgba(18, 60, 50, .12);
+      --shadow: 0 25px 70px rgba(18, 60, 50, .13);
+      --radius: 28px;
+      --container: 1240px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: var(--ivory);
+      color: var(--forest);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    body.dark {
+      --ivory: #102e28;
+      --forest: #f7f1e7;
+      --forest-dark: #071b17;
+      --white: #163d34;
+      --muted: #bfd0c9;
+      --border: rgba(255,255,255,.12);
+      background: #102e28;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    select,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .section {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .eyebrow {
+      color: var(--coral);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: .75rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .section-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.6rem, 5vw, 5.3rem);
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      max-width: 570px;
+      margin-top: 20px;
+      font-size: 1.05rem;
+    }
+
+    /* ================= HEADER ================= */
+
+    header {
+      position: fixed;
+      z-index: 1000;
+      width: 100%;
+      top: 0;
+      left: 0;
+      padding: 22px 0;
+      transition: .35s ease;
+    }
+
+    header.scrolled {
+      padding: 12px 0;
+    }
+
+    .nav {
+      height: 68px;
+      padding: 0 18px 0 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(247,241,231,.10);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 100px;
+      transition: .3s;
+    }
+
+    header.scrolled .nav {
+      background: rgba(247,241,231,.78);
+      border-color: rgba(18,60,50,.1);
+      box-shadow: 0 10px 35px rgba(18,60,50,.08);
+    }
+
+    body.dark header.scrolled .nav {
+      background: rgba(16,46,40,.82);
+    }
+
+    .logo {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: .15em;
+    }
+
+    .logo span {
+      color: var(--coral);
+    }
+
+    .desktop-menu {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .desktop-menu a {
+      font-size: .88rem;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .desktop-menu a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0;
+      height: 1px;
+      background: var(--coral);
+      transition: .3s;
+    }
+
+    .desktop-menu a:hover::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.25);
+      color: var(--forest);
+      display: grid;
+      place-items: center;
+      transition: .3s;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(25deg);
+      background: var(--coral);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 25px;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: .88rem;
+      transition: transform .3s, box-shadow .3s, background .3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-4px);
+    }
+
+    .btn-primary {
+      color: var(--white);
+      background: var(--forest);
+      box-shadow: 0 12px 30px rgba(18,60,50,.2);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 18px 40px rgba(18,60,50,.28);
+    }
+
+    .btn-coral {
+      color: var(--forest);
+      background: var(--coral);
+    }
+
+    .btn-outline {
+      color: var(--forest);
+      border: 1px solid rgba(18,60,50,.25);
+      background: transparent;
+    }
+
+    .hamburger {
+      display: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--forest);
+      color: var(--white);
+      place-items: center;
+      font-size: 1.2rem;
+    }
+
+    /* ================= HERO ================= */
+
+    .hero {
+      min-height: 100svh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      background:
+        radial-gradient(circle at 75% 35%, rgba(239,139,120,.35), transparent 30%),
+        linear-gradient(120deg, #e8dfd0 0%, #f7f1e7 55%, #e7eee7 100%);
+    }
+
+    body.dark .hero {
+      background:
+        radial-gradient(circle at 75% 35%, rgba(239,139,120,.2), transparent 30%),
+        #102e28;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 650px;
+      height: 650px;
+      border-radius: 50%;
+      right: -180px;
+      top: 5%;
+      background: rgba(239,139,120,.12);
+      filter: blur(5px);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 5;
+      width: 58%;
+      padding-top: 90px;
+    }
+
+    .hero h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(4rem, 8.5vw, 8.5rem);
+      line-height: .82;
+      letter-spacing: -.065em;
+      max-width: 900px;
+    }
+
+    .hero h1 em {
+      color: var(--coral);
+      font-style: normal;
+    }
+
+    .hero-copy {
+      margin-top: 32px;
+      max-width: 540px;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .hero-buttons {
+      margin-top: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-animal {
+      position: absolute;
+      z-index: 3;
+      right: 2%;
+      bottom: 3%;
+      width: min(52vw, 720px);
+      filter: drop-shadow(0 30px 35px rgba(0,0,0,.18));
+      animation: dogFloat 5s ease-in-out infinite;
+    }
+
+    .hero-cat {
+      position: absolute;
+      z-index: 4;
+      right: 3%;
+      top: 21%;
+      width: 190px;
+      filter: drop-shadow(0 20px 25px rgba(0,0,0,.14));
+      animation: catFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes dogFloat {
+      0%,100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-15px) rotate(1deg); }
+    }
+
+    @keyframes catFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(12px); }
+    }
+
+    .paw-particle {
+      position: absolute;
+      color: var(--coral);
+      opacity: .28;
+      font-size: 20px;
+      animation: particle 8s linear infinite;
+    }
+
+    @keyframes particle {
+      0% { transform: translateY(80px) rotate(0); opacity: 0; }
+      15% { opacity: .3; }
+      80% { opacity: .2; }
+      100% { transform: translateY(-350px) rotate(90deg); opacity: 0; }
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      z-index: 6;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: var(--forest);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      top: -50%;
+      background: var(--coral);
+      animation: scrollLine 1.7s infinite;
+    }
+
+    @keyframes scrollLine {
+      to { top: 100%; }
+    }
+
+    /* ================= SEARCH ================= */
+
+    .search-wrap {
+      position: relative;
+      z-index: 20;
+      margin-top: -50px;
+    }
+
+    .search-panel {
+      background: rgba(255,255,255,.67);
+      border: 1px solid rgba(255,255,255,.7);
+      backdrop-filter: blur(25px);
+      padding: 22px;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) auto;
+      gap: 12px;
+    }
+
+    body.dark .search-panel {
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.12);
+    }
+
+    .field {
+      background: rgba(255,255,255,.65);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 9px 14px;
+      transition: .25s;
+    }
+
+    body.dark .field {
+      background: rgba(255,255,255,.06);
+    }
+
+    .field:focus-within {
+      border-color: var(--coral);
+      box-shadow: 0 0 0 4px rgba(239,139,120,.12);
+      transform: translateY(-2px);
+    }
+
+    .field label {
+      display: block;
+      color: var(--muted);
+      font-size: .67rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 2px;
+    }
+
+    .field select,
+    .field input {
+      border: 0;
+      outline: 0;
+      background: transparent;
+      width: 100%;
+      color: var(--forest);
+      font-weight: 700;
+    }
+
+    /* ================= PETS ================= */
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--border);
+      color: var(--forest);
+      background: transparent;
+      padding: 10px 18px;
+      border-radius: 100px;
+      transition: .25s;
+      font-weight: 600;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      color: var(--white);
+      background: var(--forest);
+    }
+
+    .pet-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr .9fr;
+      gap: 20px;
+    }
+
+    .pet-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 550px;
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: 0 18px 50px rgba(18,60,50,.08);
+      transition: transform .5s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .pet-card:nth-child(2),
+    .pet-card:nth-child(5) {
+      margin-top: 55px;
+    }
+
+    .pet-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .pet-image {
+      height: 100%;
+      min-height: 550px;
+      object-fit: cover;
+      transition: transform .8s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .pet-card:hover .pet-image {
+      transform: scale(1.07);
+    }
+
+    .pet-overlay {
+      position: absolute;
+      inset: 45% 0 0;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      color: white;
+      background: linear-gradient(transparent, rgba(0,0,0,.82));
+    }
+
+    .pet-status {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 7px 13px;
+      border-radius: 100px;
+      color: var(--forest);
+      background: var(--coral);
+      font-size: .7rem;
+      font-weight: 800;
+    }
+
+    .pet-overlay h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 2.3rem;
+    }
+
+    .pet-meta {
+      opacity: .8;
+      font-size: .85rem;
+      margin-bottom: 5px;
+    }
+
+    .pet-personality {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transform: translateY(10px);
+      transition: .45s;
+    }
+
+    .pet-card:hover .pet-personality {
+      opacity: 1;
+      max-height: 100px;
+      transform: translateY(0);
+      margin: 7px 0;
+    }
+
+    .pet-btn {
+      margin-top: 12px;
+      width: max-content;
+      padding: 11px 18px;
+      border-radius: 100px;
+      background: var(--coral);
+      color: var(--forest);
+      font-weight: 800;
+      transform: translateY(10px);
+      opacity: .85;
+      transition: .3s;
+    }
+
+    .pet-card:hover .pet-btn {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ================= MATCH ================= */
+
+    .match-section {
+      background: var(--forest);
+      color: var(--white);
+      overflow: hidden;
+    }
+
+    .match-layout {
+      display: grid;
+      grid-template-columns: .75fr 1.25fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .match-copy .section-subtitle {
+      color: rgba(255,255,255,.65);
+    }
+
+    .match-box {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.13);
+      backdrop-filter: blur(20px);
+      border-radius: 32px;
+      padding: 40px;
+      min-height: 480px;
+      position: relative;
+    }
+
+    .quiz-progress {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 35px;
+    }
+
+    .paw-progress {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      font-size: .8rem;
+    }
+
+    .paw-progress.active {
+      background: var(--coral);
+      color: var(--forest);
+    }
+
+    .quiz-question {
+      display: none;
+    }
+
+    .quiz-question.active {
+      display: block;
+      animation: quizIn .45s ease;
+    }
+
+    @keyframes quizIn {
+      from { opacity: 0; transform: translateX(25px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .quiz-question h3 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem,4vw,3.5rem);
+      line-height: 1;
+      margin-bottom: 28px;
+    }
+
+    .answers {
+      display: grid;
+      gap: 10px;
+    }
+
+    .answer {
+      text-align: left;
+      color: var(--white);
+      padding: 17px 20px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 15px;
+      transition: .25s;
+    }
+
+    .answer:hover,
+    .answer.selected {
+      background: var(--coral);
+      color: var(--forest);
+      transform: translateX(6px);
+    }
+
+    .quiz-result {
+      display: none;
+      text-align: center;
+    }
+
+    .quiz-result.show {
+      display: block;
+      animation: quizIn .5s ease;
+    }
+
+    .match-pet {
+      max-width: 230px;
+      height: 190px;
+      margin: 20px auto;
+      object-fit: cover;
+      border-radius: 22px;
+    }
+
+    /* ================= IMPACT ================= */
+
+    .impact {
+      padding: 100px 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      border-radius: 30px;
+    }
+
+    .stat {
+      background: var(--white);
+      padding: 55px 30px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(3rem,5vw,5rem);
+      line-height: 1;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      margin-top: 10px;
+      font-size: .9rem;
+    }
+
+    /* ================= JOURNEY ================= */
+
+    .journey-track {
+      margin-top: 70px;
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 30px;
+    }
+
+    .journey-line {
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 50px;
+      height: 2px;
+      background: var(--border);
+    }
+
+    .journey-progress {
+      position: absolute;
+      left: 10%;
+      top: 50px;
+      height: 2px;
+      width: 0;
+      background: var(--coral);
+    }
+
+    .journey-step {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .journey-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 25px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      font-size: 2rem;
+      box-shadow: 0 15px 35px rgba(18,60,50,.08);
+      transition: .35s;
+    }
+
+    .journey-step:hover .journey-icon {
+      transform: translateY(-10px) rotate(8deg);
+      background: var(--coral);
+    }
+
+    .journey-step h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 1.8rem;
+    }
+
+    .journey-step p {
+      color: var(--muted);
+      font-size: .9rem;
+      max-width: 230px;
+      margin: 8px auto;
+    }
+
+    /* ================= STORIES ================= */
+
+    .stories {
+      background: #ece5d9;
+      overflow: hidden;
+    }
+
+    body.dark .stories {
+      background: #0c2721;
+    }
+
+    .story-track {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      padding: 10px 0 30px;
+    }
+
+    .story-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .story-card {
+      min-width: min(470px, 85vw);
+      background: var(--white);
+      border-radius: 28px;
+      overflow: hidden;
+      scroll-snap-align: start;
+      box-shadow: 0 20px 50px rgba(18,60,50,.1);
+      transition: .4s;
+    }
+
+    .story-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .story-img {
+      height: 310px;
+      object-fit: cover;
+      transition: .6s;
+    }
+
+    .story-card:hover .story-img {
+      transform: scale(1.05);
+    }
+
+    .story-content {
+      padding: 28px;
+    }
+
+    .story-date {
+      color: var(--coral);
+      font-size: .75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    .story-content h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 2rem;
+      margin: 8px 0;
+    }
+
+    .story-content p {
+      color: var(--muted);
+    }
+
+    /* ================= SUPPORT ================= */
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 18px;
+      margin-top: 55px;
+    }
+
+    .support-card {
+      min-height: 320px;
+      border-radius: 28px;
+      padding: 28px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: .45s;
+    }
+
+    .support-card::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      right: -60px;
+      bottom: -60px;
+      background: rgba(239,139,120,.15);
+      transition: .5s;
+    }
+
+    .support-card:hover {
+      transform: translateY(-12px);
+      box-shadow: var(--shadow);
+    }
+
+    .support-card:hover::after {
+      transform: scale(1.5);
+    }
+
+    .support-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: rgba(239,139,120,.15);
+      font-size: 1.5rem;
+      margin-bottom: 70px;
+    }
+
+    .support-card h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 1.9rem;
+    }
+
+    .support-card p {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: .9rem;
+    }
+
+    /* ================= CTA ================= */
+
+    .final-cta {
+      margin: 0 24px 24px;
+      min-height: 600px;
+      border-radius: 38px;
+      background:
+        linear-gradient(110deg, rgba(18,60,50,.96), rgba(18,60,50,.78)),
+        url("https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=1800&q=85")
+        center/cover;
+      color: white;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .final-cta::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, transparent, rgba(0,0,0,.2));
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .cta-content h2 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(3.5rem, 7vw, 7.5rem);
+      line-height: .85;
+      letter-spacing: -.06em;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .cta-content p {
+      max-width: 550px;
+      margin: 25px auto 30px;
+      color: rgba(255,255,255,.72);
+    }
+
+    .cta-animal {
+      position: absolute;
+      width: 170px;
+      bottom: -20px;
+      opacity: .9;
+      animation: animalWalk 10s linear infinite;
+    }
+
+    .cta-animal.cat {
+      width: 120px;
+      bottom: 25px;
+      animation-duration: 13s;
+      animation-delay: -5s;
+    }
+
+    @keyframes animalWalk {
+      from { left: -200px; transform: scaleX(1); }
+      49% { transform: scaleX(1); }
+      50% { transform: scaleX(-1); }
+      to { left: calc(100% + 200px); transform: scaleX(-1); }
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer {
+      background: var(--forest-dark);
+      color: white;
+      padding: 80px 0 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 50px;
+    }
+
+    .footer-logo {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+    }
+
+    .footer-brand p {
+      color: rgba(255,255,255,.55);
+      max-width: 330px;
+      margin-top: 18px;
+    }
+
+    footer h4 {
+      margin-bottom: 20px;
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--coral);
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 11px;
+      color: rgba(255,255,255,.62);
+      font-size: .9rem;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .newsletter {
+      display: flex;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 100px;
+      padding: 5px;
+      margin-top: 18px;
+    }
+
+    .newsletter input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: white;
+      padding: 0 15px;
+    }
+
+    .newsletter button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--coral);
+      color: var(--forest);
+    }
+
+    .socials {
+      display: flex;
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    .social {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.15);
+      transition: .3s;
+    }
+
+    .social:hover {
+      background: var(--coral);
+      color: var(--forest);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      margin-top: 70px;
+      padding-top: 25px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      display: flex;
+      justify-content: space-between;
+      color: rgba(255,255,255,.42);
+      font-size: .75rem;
+    }
+
+    /* ================= MOBILE MENU ================= */
+
+    .mobile-menu {
+      position: fixed;
+      z-index: 999;
+      inset: 0;
+      background: var(--forest);
+      color: white;
+      padding: 110px 30px 30px;
+      transform: translateX(100%);
+      transition: transform .5s cubic-bezier(.7,0,.2,1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+
+    .mobile-links {
+      list-style: none;
+      display: grid;
+      gap: 20px;
+    }
+
+    .mobile-links a {
+      font-family: "Playfair Display", serif;
+      font-size: 3rem;
+    }
+
+    .mobile-bottom {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mobile-theme {
+      color: white;
+      background: rgba(255,255,255,.1);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+
+    /* ================= TOAST ================= */
+
+    .toast {
+      position: fixed;
+      z-index: 2000;
+      bottom: 25px;
+      left: 50%;
+      transform: translate(-50%, 100px);
+      padding: 14px 22px;
+      background: var(--forest);
+      color: white;
+      border-radius: 100px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: .4s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media(max-width:1100px) {
+      .desktop-menu,
+      .nav > .nav-actions {
+        display: none;
+      }
+
+      .hamburger {
+        display: grid;
+      }
+
+      .hero-content {
+        width: 65%;
+      }
+
+      .hero-animal {
+        width: 52vw;
+        right: -5%;
+      }
+
+      .pet-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .pet-card:nth-child(2),
+      .pet-card:nth-child(5) {
+        margin-top: 0;
+      }
+
+      .support-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media(max-width:768px) {
+      .container {
+        width: min(var(--container), calc(100% - 32px));
+      }
+
+      .section {
+        padding: 85px 0;
+      }
+
+      .nav {
+        height: 60px;
+      }
+
+      .hero {
+        min-height: 850px;
+        align-items: flex-start;
+      }
+
+      .hero-content {
+        width: 100%;
+        padding-top: 160px;
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: clamp(3.5rem, 15vw, 6rem);
+      }
+
+      .hero-copy {
+        margin-inline: auto;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .hero-animal {
+        width: 78vw;
+        max-width: 450px;
+        right: 50%;
+        transform: translateX(50%);
+        bottom: 20px;
+      }
+
+      .hero-cat {
+        width: 110px;
+        top: 45%;
+        right: 4%;
+      }
+
+      .search-wrap {
+        margin-top: -30px;
+      }
+
+      .search-panel {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .search-panel .btn {
+        grid-column: 1 / -1;
+      }
+
+      .section-heading {
+        display: block;
+      }
+
+      .filters {
+        margin-top: 25px;
+      }
+
+      .pet-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pet-card {
+        min-height: 500px;
+      }
+
+      .pet-image {
+        min-height: 500px;
+      }
+
+      .match-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .match-box {
+        padding: 25px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .journey-track {
+        grid-template-columns: 1fr 1fr;
+        gap: 45px 15px;
+      }
+
+      .journey-line,
+      .journey-progress {
+        display: none;
+      }
+
+      .support-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    @media(max-width:480px) {
+      .btn {
+        min-height: 48px;
+        padding: 0 19px;
+      }
+
+      .hero {
+        min-height: 800px;
+      }
+
+      .hero-content {
+        padding-top: 140px;
+      }
+
+      .hero h1 {
+        font-size: 3.7rem;
+      }
+
+      .hero-animal {
+        width: 92vw;
+        bottom: 30px;
+      }
+
+      .search-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .search-panel .btn {
+        grid-column: auto;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat {
+        padding: 38px 20px;
+      }
+
+      .journey-track {
+        grid-template-columns: 1fr;
+      }
+
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .support-card {
+        min-height: 280px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mobile-links a {
+        font-size: 2.3rem;
+      }
+
+      .final-cta {
+        margin-inline: 12px;
+        min-height: 550px;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+
+  <header id="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="#home" class="logo">PAW<span>O</span>RA</a>
+
+        <ul class="desktop-menu">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#pets">Pets</a></li>
+          <li><a href="#match">Match</a></li>
+          <li><a href="#journey">Journey</a></li>
+          <li><a href="#stories">Stories</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☼</button>
+          <a href="#pets" class="btn btn-primary">Adopt Now <span>↗</span></a>
+        </div>
+
+        <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= MOBILE MENU ================= -->
+
+  <div class="mobile-menu" id="mobileMenu">
+    <ul class="mobile-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#pets">Pets</a></li>
+      <li><a href="#match">Match</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#stories">Stories</a></li>
+      <li><a href="#support">Support</a></li>
+    </ul>
+
+    <div class="mobile-bottom">
+      <a href="#pets" class="btn btn-coral">Adopt Now ↗</a>
+      <button class="mobile-theme" id="mobileTheme">☼</button>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero" id="home">
+
+      <span class="paw-particle" style="left:12%;bottom:10%;animation-delay:0s">🐾</span>
+      <span class="paw-particle" style="left:24%;bottom:5%;animation-delay:2s">🐾</span>
+      <span class="paw-particle" style="left:47%;bottom:15%;animation-delay:4s">🐾</span>
+      <span class="paw-particle" style="left:68%;bottom:2%;animation-delay:1s">🐾</span>
+      <span class="paw-particle" style="left:83%;bottom:8%;animation-delay:5s">🐾</span>
+
+      <div class="container">
+        <div class="hero-content">
+          <div class="eyebrow">Every paw deserves a forever</div>
+
+          <h1>
+            Find Your
+            <em>Forever</em>
+            Friend.
+          </h1>
+
+          <p class="hero-copy">
+            Meet rescued dogs and cats waiting for a family,
+            a warm home and the kind of love that never expires.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#pets" class="btn btn-primary">
+              Adopt a Pet <span>→</span>
+            </a>
+
+            <a href="#pets" class="btn btn-outline">
+              Meet Our Animals
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <img
+        class="hero-animal"
+        src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=1000&q=90"
+        alt="Happy rescued dog"
+      >
+
+      <img
+        class="hero-cat"
+        src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=500&q=85"
+        alt="Cat"
+      >
+
+      <div class="scroll-indicator">
+        <span>Explore</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ================= SEARCH ================= -->
+
+    <section class="search-wrap">
+      <div class="container">
+        <form class="search-panel" id="searchForm">
+
+          <div class="field">
+            <label>Animal Type</label>
+            <select id="searchType">
+              <option>Any Animal</option>
+              <option>Dog</option>
+              <option>Cat</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Age</label>
+            <select>
+              <option>Any Age</option>
+              <option>Puppy / Kitten</option>
+              <option>Young</option>
+              <option>Adult</option>
+              <option>Senior</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Size</label>
+            <select>
+              <option>Any Size</option>
+              <option>Small</option>
+              <option>Medium</option>
+              <option>Large</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Location</label>
+            <input type="text" placeholder="Your city">
+          </div>
+
+          <button class="btn btn-coral" type="submit">
+            Find My Match →
+          </button>
+
+        </form>
+      </div>
+    </section>
+
+    <!-- ================= PETS ================= -->
+
+    <section class="section" id="pets">
+
+      <div class="container">
+
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">Waiting for you</div>
+            <h2 class="section-title">Meet Your<br>New Best Friend.</h2>
+            <p class="section-subtitle">
+              Every animal has a story. Maybe the next chapter belongs with you.
+            </p>
+          </div>
+
+          <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="dog">Dog</button>
+            <button class="filter-btn" data-filter="cat">Cat</button>
+            <button class="filter-btn" data-filter="puppy">Puppy</button>
+            <button class="filter-btn" data-filter="kitten">Kitten</button>
+          </div>
+        </div>
+
+        <div class="pet-grid">
+
+          <article class="pet-card" data-type="dog">
+            <img
+              class="pet-image"
+              src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=85"
+              alt="Bruno the Golden Retriever"
+            >
+            <span class="pet-status">Available</span>
+            <div class="pet-overlay">
+              <div class="pet-meta">Golden Retriever · 2 Years</div>
+              <h3>Bruno</h3>
+              <div class="pet-personality">
+                Gentle, playful and completely obsessed with tennis balls.
+              </div>
+              <button class="pet-btn" onclick="adoptPet('Bruno')">Meet Bruno →</button>
+            </div>
+          </article>
+
+          <article class="pet-card" data-type="cat">
+            <img
+              class="pet-image"
+              src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=800&q=85"
+              alt="Luna the cat"
+            >
+            <span class="pet-status">Available</span>
+            <div class="pet-overlay">
+              <div class="pet-meta">Domestic Shorthair · 1 Year</div>
+              <h3>Luna</h3>
+              <div class="pet-personality">
+                Curious, affectionate and a professional window watcher.
+              </div>
+              <button class="pet-btn" onclick="adoptPet('Luna')">Meet Luna →</button>
+            </div>
+          </article>
+
+          <article class="pet-card" data-type="puppy dog">
+            <img
+              class="pet-image"
+              src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=800&q=85"
+              alt="Milo puppy"
+            >
+            <span class="pet-status">New</span>
+            <div class="pet-overlay">
+              <div class="pet-meta">Mixed Breed · 7 Months</div>
+              <h3>Milo</h3>
+              <div class="pet-personality">
+                Energetic, silly and always ready for an adventure.
+              </div>
+              <button class="pet-btn" onclick="adoptPet('Milo')">Meet Milo →</button>
+            </div>
+          </article>
+
+          <article class="pet-card" data-type="cat kitten">
+            <img
+              class="pet-image"
+              src="https://images.unsplash.com/photo-1519052537078-e6302a4968d4?auto=format&fit=crop&w=800&q=85"
+              alt="Nala kitten"
+            >
+            <span class="pet-status">Available</span>
+            <div class="pet-overlay">
+              <div class="pet-meta">Tabby · 5 Months</div>
+              <h3>Nala</h3>
+              <div class="pet-personality">
+                Tiny paws, enormous personality and a love for cuddles.
+              </div>
+              <button class="pet-btn" onclick="adoptPet('Nala')">Meet Nala →</button>
+            </div>
+          </article>
+
+          <article class="pet-card" data-type="dog">
+            <img
+              class="pet-image"
+              src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=85"
+              alt="Ollie dog"
+            >
+            <span class="pet-status">Available</span>
+            <div class="pet-overlay">
+              <div class="pet-meta">Beagle · 3 Years</div>
+              <h3>Ollie</h3>
+              <div class="pet-personality">
+                Friendly, food motivated and excellent at making new friends.
+              </div>
+              <button class="pet-btn" onclick="adoptPet('Ollie')">Meet Ollie →</button>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MATCH QUIZ ================= -->
+
+    <section class="section match-section" id="match">
+
+      <div class="container">
+
+        <div class="match-layout">
+
+          <div class="match-copy">
+            <div class="eyebrow">A little magic</div>
+
+            <h2 class="section-title">
+              Find Your<br>
+              Perfect Match.
+            </h2>
+
+            <p class="section-subtitle">
+              Tell us a little about your lifestyle and we'll help
+              you discover the kind of companion who might fit your world.
+            </p>
+          </div>
+
+          <div class="match-box">
+
+            <div class="quiz-progress">
+              <span class="paw-progress active">🐾</span>
+              <span class="paw-progress">🐾</span>
+              <span class="paw-progress">🐾</span>
+              <span class="paw-progress">🐾</span>
+              <span class="paw-progress">🐾</span>
+            </div>
+
+            <div class="quiz-question active" data-question="1">
+              <h3>What does your perfect day look like?</h3>
+
+              <div class="answers">
+                <button class="answer">Long walks and outdoor adventures</button>
+                <button class="answer">Slow mornings and cozy evenings</button>
+                <button class="answer">A little bit of everything</button>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-question="2">
+              <h3>How much energy should your companion have?</h3>
+
+              <div class="answers">
+                <button class="answer">Let's run!</button>
+                <button class="answer">Moderately active</button>
+                <button class="answer">Calm and cuddly</button>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-question="3">
+              <h3>What kind of home do you have?</h3>
+
+              <div class="answers">
+                <button class="answer">Apartment</button>
+                <button class="answer">House with a garden</button>
+                <button class="answer">Big open space</button>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-question="4">
+              <h3>How much time can you spend together?</h3>
+
+              <div class="answers">
+                <button class="answer">Most of the day</button>
+                <button class="answer">A few hours daily</button>
+                <button class="answer">Mostly evenings</button>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-question="5">
+              <h3>What are you looking for most?</h3>
+
+              <div class="answers">
+                <button class="answer">Adventure buddy</button>
+                <button class="answer">Best friend</button>
+                <button class="answer">Cuddle companion</button>
+              </div>
+            </div>
+
+            <div class="quiz-result" id="quizResult">
+              <div class="eyebrow">Your Pawfect Match</div>
+              <h3 style="font-family:'Playfair Display';font-size:3rem;">
+                Meet Luna
+              </h3>
+
+              <img
+                class="match-pet"
+                src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=600&q=85"
+                alt="Luna"
+              >
+
+              <p style="opacity:.7;">
+                A gentle companion who loves cozy homes,
+                quiet afternoons and people who give great cuddles.
+              </p>
+
+              <button class="btn btn-coral" style="margin-top:20px;"
+                onclick="adoptPet('Luna')">
+                Meet Your Match →
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= IMPACT ================= -->
+
+    <section class="impact">
+
+      <div class="container">
+
+        <div style="text-align:center;margin-bottom:50px;">
+          <div class="eyebrow">The difference we make</div>
+          <h2 class="section-title">Love Has Numbers.</h2>
+        </div>
+
+        <div class="stats-grid">
+
+          <div class="stat">
+            <div class="stat-number" data-target="1280">0</div>
+            <div class="stat-label">Pets Rescued</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-number" data-target="940">0</div>
+            <div class="stat-label">Forever Homes</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-number" data-target="320">0</div>
+            <div class="stat-label">Volunteers</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-number" data-target="98">0</div>
+            <div class="stat-label">Happy Tails</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= JOURNEY ================= -->
+
+    <section class="section" id="journey">
+
+      <div class="container">
+
+        <div style="text-align:center;">
+          <div class="eyebrow">Your adoption story</div>
+          <h2 class="section-title">From Hello To<br>Forever.</h2>
+          <p class="section-subtitle" style="margin-inline:auto;">
+            A simple, thoughtful journey designed around the animal
+            and the human who is about to change its life.
+          </p>
+        </div>
+
+        <div class="journey-track">
+
+          <div class="journey-line"></div>
+          <div class="journey-progress"></div>
+
+          <div class="journey-step">
+            <div class="journey-icon">🔎</div>
+            <h3>Discover</h3>
+            <p>Explore animals whose personalities fit your lifestyle.</p>
+          </div>
+
+          <div class="journey-step">
+            <div class="journey-icon">💬</div>
+            <h3>Connect</h3>
+            <p>Tell us about your home, routine and ideal companion.</p>
+          </div>
+
+          <div class="journey-step">
+            <div class="journey-icon">🤝</div>
+            <h3>Meet</h3>
+            <p>Spend meaningful time together before making a decision.</p>
+          </div>
+
+          <div class="journey-step">
+            <div class="journey-icon">🏡</div>
+            <h3>Adopt</h3>
+            <p>Bring your new best friend home and begin forever.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STORIES ================= -->
+
+    <section class="section stories" id="stories">
+
+      <div class="container">
+
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">Forever starts here</div>
+            <h2 class="section-title">Stories Worth<br>Coming Home To.</h2>
+          </div>
+
+          <p class="section-subtitle">
+            Behind every adoption is a beginning, a brave little heart,
+            and a family who decided to say yes.
+          </p>
+        </div>
+
+        <div class="story-track">
+
+          <article class="story-card">
+            <img
+              class="story-img"
+              src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=85"
+              alt="Dog with family"
+            >
+            <div class="story-content">
+              <span class="story-date">Adopted · March 2026</span>
+              <h3>Bruno found his people.</h3>
+              <p>
+                “We thought we were adopting a dog.
+                We didn't realize we were gaining a whole new personality in the family.”
+              </p>
+            </div>
+          </article>
+
+          <article class="story-card">
+            <img
+              class="story-img"
+              src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=900&q=85"
+              alt="Happy cat"
+            >
+            <div class="story-content">
+              <span class="story-date">Adopted · January 2026</span>
+              <h3>Luna chose them.</h3>
+              <p>
+                “She walked straight into our living room,
+                curled up beside us and somehow the decision was already made.”
+              </p>
+            </div>
+          </article>
+
+          <article class="story-card">
+            <img
+              class="story-img"
+              src="https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=900&q=85"
+              alt="Dog enjoying life"
+            >
+            <div class="story-content">
+              <span class="story-date">Adopted · November 2025</span>
+              <h3>Ollie's second chance.</h3>
+              <p>
+                From a rescue kennel to weekend hikes,
+                Ollie's world became bigger one loving day at a time.
+              </p>
+            </div>
+          </article>
+
+          <article class="story-card">
+            <img
+              class="story-img"
+              src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=900&q=85"
+              alt="Dog with owner"
+            >
+            <div class="story-content">
+              <span class="story-date">Adopted · August 2025</span>
+              <h3>A home for Milo.</h3>
+              <p>
+                Milo arrived nervous and left with a favorite toy,
+                a new family and a name written on his new food bowl.
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SUPPORT ================= -->
+
+    <section class="section" id="support">
+
+      <div class="container">
+
+        <div style="text-align:center;">
+          <div class="eyebrow">Be part of the change</div>
+          <h2 class="section-title">There Are Many<br>Ways To Love.</h2>
+        </div>
+
+        <div class="support-grid">
+
+          <article class="support-card">
+            <div class="support-icon">🐶</div>
+            <h3>Adopt a Pet</h3>
+            <p>
+              Give an animal the family and future they've been waiting for.
+            </p>
+          </article>
+
+          <article class="support-card">
+            <div class="support-icon">🏡</div>
+            <h3>Foster a Pet</h3>
+            <p>
+              Open your home temporarily and help an animal prepare for forever.
+            </p>
+          </article>
+
+          <article class="support-card">
+            <div class="support-icon">🐾</div>
+            <h3>Volunteer</h3>
+            <p>
+              Your time can create walks, meals, socialization and second chances.
+            </p>
+          </article>
+
+          <article class="support-card">
+            <div class="support-icon">♥</div>
+            <h3>Donate</h3>
+            <p>
+              Help us provide food, medical care, shelter and loving support.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FINAL CTA ================= -->
+
+    <section class="final-cta">
+
+      <img
+        class="cta-animal"
+        src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=500&q=80"
+        alt=""
+      >
+
+      <img
+        class="cta-animal cat"
+        src="https://images.unsplash.com/photo-1519052537078-e6302a4968d4?auto=format&fit=crop&w=500&q=80"
+        alt=""
+      >
+
+      <div class="cta-content">
+        <div class="eyebrow">One decision. Two lives changed.</div>
+
+        <h2>Your New Best Friend Is Waiting.</h2>
+
+        <p>
+          Somewhere out there is a pair of eyes waiting to meet yours.
+          Start the journey today.
+        </p>
+
+        <a href="#pets" class="btn btn-coral">
+          Start Adopting ↗
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <div class="footer-logo">PAW<span style="color:var(--coral)">O</span>RA</div>
+
+          <p>
+            Connecting rescued animals with people,
+            families and forever homes filled with love.
+          </p>
+
+          <div class="socials">
+            <a class="social" href="#" aria-label="Instagram">◎</a>
+            <a class="social" href="#" aria-label="Facebook">f</a>
+            <a class="social" href="#" aria-label="Twitter">𝕏</a>
+            <a class="social" href="#" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+
+        <div>
+          <h4>Explore</h4>
+
+          <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#pets">Pets</a>
+            <a href="#match">Match</a>
+            <a href="#journey">Journey</a>
+            <a href="#stories">Stories</a>
+          </div>
+        </div>
+
+        <div>
+          <h4>Contact</h4>
+
+          <div class="footer-links">
+            <span>hello@pawora.org</span>
+            <span>+91 98765 43210</span>
+            <span>Mon — Sat · 9AM — 6PM</span>
+          </div>
+        </div>
+
+        <div>
+          <h4>Stay Close</h4>
+
+          <p style="color:rgba(255,255,255,.55);font-size:.88rem;">
+            Get adoption stories and updates delivered to your inbox.
+          </p>
+
+          <form class="newsletter" id="newsletter">
+            <input type="email" placeholder="Your email" required>
+            <button type="submit">→</button>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 PAWORA. All rights reserved.</span>
+        <span>Made for paws, built for love.</span>
+      </div>
+
+    </div>
+
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script>
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    const header = document.getElementById("header");
+
+    window.addEventListener("scroll", () => {
+      header.classList.toggle("scrolled", window.scrollY > 30);
+    });
+
+
+    /* ==========================================
+       MOBILE MENU
+    ========================================== */
+
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    hamburger.addEventListener("click", () => {
+      mobileMenu.classList.toggle("open");
+      hamburger.textContent = mobileMenu.classList.contains("open") ? "×" : "☰";
+    });
+
+    document.querySelectorAll(".mobile-links a").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+        hamburger.textContent = "☰";
+      });
+    });
+
+
+    /* ==========================================
+       THEME
+    ========================================== */
+
+    const themeToggle = document.getElementById("themeToggle");
+    const mobileTheme = document.getElementById("mobileTheme");
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+
+      const dark = document.body.classList.contains("dark");
+
+      localStorage.setItem("pawora-theme", dark ? "dark" : "light");
+
+      themeToggle.textContent = dark ? "☾" : "☼";
+      mobileTheme.textContent = dark ? "☾" : "☼";
+    }
+
+    themeToggle.addEventListener("click", toggleTheme);
+    mobileTheme.addEventListener("click", toggleTheme);
+
+    if (localStorage.getItem("pawora-theme") === "dark") {
+      document.body.classList.add("dark");
+      themeToggle.textContent = "☾";
+      mobileTheme.textContent = "☾";
+    }
+
+
+    /* ==========================================
+       PET FILTER
+    ========================================== */
+
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const petCards = document.querySelectorAll(".pet-card");
+
+    filterButtons.forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        filterButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        const filter = button.dataset.filter;
+
+        petCards.forEach(card => {
+
+          const types = card.dataset.type;
+
+          if (filter === "all" || types.includes(filter)) {
+
+            card.style.display = "";
+            card.animate(
+              [
+                { opacity: 0, transform: "translateY(20px)" },
+                { opacity: 1, transform: "translateY(0)" }
+              ],
+              {
+                duration: 450,
+                easing: "cubic-bezier(.2,.8,.2,1)"
+              }
+            );
+
+          } else {
+            card.style.display = "none";
+          }
+
+        });
+
+      });
+
+    });
+
+
+    /* ==========================================
+       SEARCH
+    ========================================== */
+
+    document.getElementById("searchForm").addEventListener("submit", e => {
+
+      e.preventDefault();
+
+      const type = document.getElementById("searchType").value;
+
+      if (type === "Dog") {
+        document.querySelector('[data-filter="dog"]').click();
+      }
+      else if (type === "Cat") {
+        document.querySelector('[data-filter="cat"]').click();
+      }
+      else {
+        document.querySelector('[data-filter="all"]').click();
+      }
+
+      document.getElementById("pets").scrollIntoView({
+        behavior: "smooth"
+      });
+
+      showToast("Your pawfect matches are waiting below 🐾");
+
+    });
+
+
+    /* ==========================================
+       QUIZ
+    ========================================== */
+
+    let currentQuestion = 1;
+
+    const questions = document.querySelectorAll(".quiz-question");
+    const progress = document.querySelectorAll(".paw-progress");
+    const quizResult = document.getElementById("quizResult");
+
+    document.querySelectorAll(".answer").forEach(answer => {
+
+      answer.addEventListener("click", () => {
+
+        answer.classList.add("selected");
+
+        setTimeout(() => {
+
+          answer.classList.remove("selected");
+
+          if (currentQuestion < 5) {
+
+            questions[currentQuestion - 1].classList.remove("active");
+
+            currentQuestion++;
+
+            questions[currentQuestion - 1].classList.add("active");
+
+            progress.forEach((paw, index) => {
+              paw.classList.toggle("active", index < currentQuestion);
+            });
+
+          }
+          else {
+
+            questions[currentQuestion - 1].classList.remove("active");
+
+            progress.forEach(paw => paw.classList.add("active"));
+
+            quizResult.classList.add("show");
+
+          }
+
+        }, 280);
+
+      });
+
+    });
+
+
+    /* ==========================================
+       COUNTERS
+    ========================================== */
+
+    let countersStarted = false;
+
+    function animateCounters() {
+
+      if (countersStarted) return;
+
+      countersStarted = true;
+
+      document.querySelectorAll(".stat-number").forEach(counter => {
+
+        const target = Number(counter.dataset.target);
+        const duration = 1800;
+        const start = performance.now();
+
+        function update(time) {
+
+          const progress = Math.min((time - start) / duration, 1);
+
+          const eased = 1 - Math.pow(1 - progress, 3);
+
+          counter.textContent =
+            Math.floor(target * eased).toLocaleString() +
+            (target === 98 ? "%" : "+");
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          }
+
+        }
+
+        requestAnimationFrame(update);
+
+      });
+
+    }
+
+
+    /* ==========================================
+       JOURNEY ANIMATION
+    ========================================== */
+
+    function animateJourney() {
+
+      const journey = document.querySelector(".journey-track");
+
+      const rect = journey.getBoundingClientRect();
+
+      if (rect.top < window.innerHeight * .75) {
+
+        document.querySelector(".journey-progress").style.width = "80%";
+
+        document.querySelectorAll(".journey-step").forEach((step, i) => {
+
+          step.animate(
+            [
+              {
+                opacity: 0,
+                transform: "translateY(35px)"
+              },
+              {
+                opacity: 1,
+                transform: "translateY(0)"
+              }
+            ],
+            {
+              duration: 600,
+              delay: i * 120,
+              fill: "forwards",
+              easing: "cubic-bezier(.2,.8,.2,1)"
+            }
+          );
+
+        });
+
+      }
+
+    }
+
+
+    /* ==========================================
+       GSAP SCROLL ANIMATIONS
+    ========================================== */
+
+    if (
+      typeof gsap !== "undefined" &&
+      typeof ScrollTrigger !== "undefined" &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.from(".hero-content > *", {
+        opacity: 0,
+        y: 35,
+        duration: 1,
+        stagger: .12,
+        ease: "power3.out"
+      });
+
+      gsap.from(".hero-animal", {
+        opacity: 0,
+        x: 100,
+        duration: 1.4,
+        delay: .4,
+        ease: "power3.out"
+      });
+
+      gsap.utils.toArray(".pet-card").forEach((card, i) => {
+
+        gsap.from(card, {
+          opacity: 0,
+          y: 50,
+          duration: .8,
+          delay: i * .08,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 88%"
+          }
+        });
+
+      });
+
+      gsap.utils.toArray(".support-card").forEach((card, i) => {
+
+        gsap.from(card, {
+          opacity: 0,
+          y: 45,
+          duration: .7,
+          delay: i * .08,
+          scrollTrigger: {
+            trigger: card,
+            start: "top 90%"
+          }
+        });
+
+      });
+
+      gsap.to(".hero-animal", {
+        y: -40,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+
+      gsap.to(".hero-cat", {
+        y: 70,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+
+      ScrollTrigger.create({
+        trigger: ".impact",
+        start: "top 75%",
+        onEnter: animateCounters,
+        once: true
+      });
+
+      ScrollTrigger.create({
+        trigger: ".journey-track",
+        start: "top 75%",
+        onEnter: animateJourney,
+        once: true
+      });
+
+    }
+    else {
+
+      window.addEventListener("scroll", () => {
+
+        const impact = document.querySelector(".impact");
+        const rect = impact.getBoundingClientRect();
+
+        if (rect.top < window.innerHeight * .8) {
+          animateCounters();
+        }
+
+        animateJourney();
+
+      });
+
+    }
+
+
+    /* ==========================================
+       ADOPTION ACTION
+    ========================================== */
+
+    function adoptPet(name) {
+
+      showToast(
+        `Wonderful choice! ${name} would love to meet you. 🐾`
+      );
+
+    }
+
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    function showToast(message) {
+
+      const toast = document.getElementById("toast");
+
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(window.toastTimer);
+
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3200);
+
+    }
+
+
+    /* ==========================================
+       NEWSLETTER
+    ========================================== */
+
+    document.getElementById("newsletter").addEventListener("submit", e => {
+
+      e.preventDefault();
+
+      showToast("You're on the PAWORA list. Welcome! 🐾");
+
+      e.target.reset();
+
+    });
+
+
+    /* ==========================================
+       STORY PARALLAX
+    ========================================== */
+
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+
+      document.querySelectorAll(".story-card").forEach(card => {
+
+        card.addEventListener("mousemove", e => {
+
+          const rect = card.getBoundingClientRect();
+
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const rotateX = ((y / rect.height) - .5) * -4;
+          const rotateY = ((x / rect.width) - .5) * 4;
+
+          card.style.transform =
+            `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "";
+        });
+
+      });
+
+    }
+
+  </script>
+
+</body>
+</html>
